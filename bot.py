@@ -4,7 +4,13 @@ import discord, sys, asyncio, configparser, logging, random
 logging.basicConfig(level=logging.INFO, format='%(levelname)s @ %(asctime)s: %(message)s; Lineno %(lineno)d, func %(funcName)s, file %(filename)s.', datefmt='%d/%m/%Y %H:%M:%S')
 
 from hailey_data.INFO import PREFIX, VERSION
-
+try:
+    with open("TOKEN.txt") as file:
+        TOKEN = file.read()
+except Exception:
+    print("FAILED TO LOAD TOKEN.\nPlease put a file called TOKEN.txt inside this folder, containing solely the token.")
+    sys.exit(8)
+logging.info(f"Token in use: {TOKEN}")
 bot = commands.Bot(command_prefix=PREFIX)
 
 for extension in ("moderation", "roles", "joinleave"):
@@ -37,4 +43,4 @@ async def on_ready():
         final += " "
     final += "!"
     print(final)
-bot.run("ODQyMDk4NzQ4MzY0NTU0Mjgw.YJwXkw.Sd3aLWZm5QLlxNdOOXG7idxwR4w")
+bot.run(TOKEN)

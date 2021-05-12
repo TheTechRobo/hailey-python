@@ -17,7 +17,7 @@ class modCog(commands.Cog):
         member = await self.bot.fetch_user(int(member.strip("<!@>")))
         try:
             await ctx.guild.ban(member, reason=reason, delete_message_days=delete_message_days)
-        except Exception as ename:
+        except Exception:
             await ctx.send("**Oops!**\nFailed to ban user. Please move the role of Hailey the Snake higher than all roles you want to be able to ban and lower than roles you don't want to be able to ban.")
             return
         await ctx.send("Success! :white_check_mark: ")
