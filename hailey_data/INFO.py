@@ -1,0 +1,2 @@
+PREFIX = "hailey: "
+VERSION = "(unknown)"
