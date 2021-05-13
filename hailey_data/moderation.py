@@ -9,13 +9,12 @@ class modCog(commands.Cog):
         self.bot = bot
     @commands.has_permissions(ban_members=True)
     @commands.command(name="ban") #https://stackoverflow.com/a/62996702/9654083
-    async def ban(self, ctx, member="NO", reason="(No reason specified.)", delete_message_days=1):
-        if member == "NO":
-            await ctx.send("Please specify a user.")
-            raise NothingSpecified(f"ctx.author: {ctx.author}, command: ban")
+    async def ban(self, ctx, member: discord.Member, reason="(No reason specified.)", delete_message_days=1):
+        """
+        TIP: Entries such as TheTechRobo#5291 do not work. You need to @-mention them.
+        """
         mod = ctx.author
         reason = f"{reason}\nBanned by {mod}"
-        member = await self.bot.fetch_user(int(member.strip("<!@>")))
         try:
             await member.send(f"**Looks like you've been banned from the {ctx.guild.name} server!**\nYour ban reason was: {reason}.")
             if appeal is not None:
@@ -26,7 +25,7 @@ class modCog(commands.Cog):
             await ctx.guild.ban(member, reason=reason, delete_message_days=delete_message_days)
         except Exception:
             await ctx.send("**Oops!**\nFailed to ban user. Please move the role of Hailey the Snake higher than all roles you want to be able to ban and lower than roles you don't want to be able to ban.")
-            raise
+            raise #awareness
         await ctx.send("Success! :white_check_mark: ")
     @commands.has_permissions(ban_members=True)
     @commands.command(name="unban")
@@ -35,10 +34,22 @@ class modCog(commands.Cog):
             await ctx.send("Please specify a user.")
             raise NothingSpecified(f"ctx.author: {ctx.author}, command: unban")
         banned_users = await ctx.guild.bans()
-        member_name, member_discriminator = member.split('#')
+        try:
+            member_name, member_discriminator = member.split('#')
+        except Exception:
+            await ctx.send("Invalid user! You need to use Username#XXXX format.")
+            raise
+        member = None
+        similar = []
         for ban_entry in banned_users: #https://www.codegrepper.com/code-examples/python/discord.py+unban+command
             if (ban_entry.user.name, ban_entry.user.discriminator) == (member_name, member_discriminator):
                 member = ban_entry.user
+            elif ban_entry.user.name == member_name:
+                similar.append(f"{ban_entry.user.name}#{ban_entry.user.discriminator}")
+        if member is None:
+            await ctx.send("Could not find user in ban list! If you're sure you typed it correctly, they may be already unbanned.")
+            await ctx.send(f"However, the following users were similar:\n{similar}")
+            raise Exception("user not found")
         mod = ctx.author
         reason = f"{reason}\nUnBanned by {mod}"
         try:
