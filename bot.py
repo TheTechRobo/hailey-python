@@ -11,9 +11,13 @@ except Exception:
     print("FAILED TO LOAD TOKEN.\nPlease put a file called TOKEN.txt inside this folder, containing solely the token.")
     sys.exit(8)
 logging.info(f"Token in use: {TOKEN}")
-bot = commands.Bot(command_prefix=PREFIX)
 
-for extension in ("moderation", "roles", "joinleave"):
+intents = discord.Intents.default()
+intents.members = True
+
+bot = commands.Bot(command_prefix=PREFIX, intents=intents)
+
+for extension in ("moderation", "roles"):
     extension = f"hailey_data.{extension}"
     bot.load_extension(extension)
     logging.info(f"LOADED EXTENTION {extension}")
@@ -43,4 +47,9 @@ async def on_ready():
         final += " "
     final += "!"
     print(final)
+@bot.event
+async def on_member_join(ctx):
+    await ctx.send("Hi, welcome to the server! I'm Hailey, the server's moderation bot!"
+                   "\nAn older version of Hailey used to exist, and it was more feature-complete. It was written in Java/Kotlin. Unfortunately, API changes rendered the bot unusable without a massive rewrite, which the developer didn't want to do."
+                   "\nThis version of Hailey is a rewrite-in-progress in Python by a new developer. We hope you enjoy. Feedback or want to contribute? https://github.com/TheTechRobo/hailey-python")
 bot.run(TOKEN)
