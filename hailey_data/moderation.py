@@ -1,6 +1,7 @@
 import discord, random
 from discord.ext import commands
 from discord.utils import get
+from .INFO import appeal
 class NothingSpecified(Exception):
     pass
 class modCog(commands.Cog):
@@ -16,7 +17,9 @@ class modCog(commands.Cog):
         reason = f"{reason}\nBanned by {mod}"
         member = await self.bot.fetch_user(int(member.strip("<!@>")))
         try:
-            await member.send(f"**Sorry!**\nLooks like you've been banned from the {ctx.guild.name} server!\nYour ban reason was: {reason}.")
+            await member.send(f"\n**Looks like you've been banned from the {ctx.guild.name} server!**\nYour ban reason was: {reason}.")
+            if appeal is not None:
+                await member.send(f"_{appeal}_")
         except Exception as ename:
             await ctx.send("(WARNING: Could not send a message to the user.)")
         try:
