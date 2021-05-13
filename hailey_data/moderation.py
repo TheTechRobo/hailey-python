@@ -16,6 +16,10 @@ class modCog(commands.Cog):
         reason = f"{reason}\nBanned by {mod}"
         member = await self.bot.fetch_user(int(member.strip("<!@>")))
         try:
+            await member.send(f"**Sorry!**\nLooks like you've been banned from the {ctx.guild.name} server!\nYour ban reason was: {reason}.")
+        except Exception as ename:
+            await ctx.send("(WARNING: Could not send a message to the user.)")
+        try:
             await ctx.guild.ban(member, reason=reason, delete_message_days=delete_message_days)
         except Exception:
             await ctx.send("**Oops!**\nFailed to ban user. Please move the role of Hailey the Snake higher than all roles you want to be able to ban and lower than roles you don't want to be able to ban.")
