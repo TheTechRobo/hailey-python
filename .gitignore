@@ -1,4 +1,5 @@
-TOKEN.txt # security
+# Security
+TOKEN.txt
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
