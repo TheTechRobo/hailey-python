@@ -54,4 +54,5 @@ async def on_ready():
 @bot.event
 async def on_member_join(ctx):
     await ctx.send(welcomeMessage)
+
 bot.run(TOKEN)
