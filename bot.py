@@ -22,7 +22,7 @@ for extension in ("moderation", "roles", "joinleave"):
 async def on_ready():
     print("Ready for action Rider sir!")
     final = ""
-    for word in "Paw Patrol! Paw Patrol! We'll be there on the double":
+    for word in "Paw Patrol!!! Paw Patrol!!!! We'll be there on the double!!!!!!!!!!!!":
         for character in word:
             uppercase = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1\\"
             lowercase = "abcdefghijklmnopqrstuvwxyz!'"
