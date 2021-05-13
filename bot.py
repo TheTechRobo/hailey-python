@@ -3,7 +3,11 @@ import discord, sys, asyncio, configparser, logging, random
 
 logging.basicConfig(level=logging.INFO, format='%(levelname)s @ %(asctime)s: %(message)s; Lineno %(lineno)d, func %(funcName)s, file %(filename)s.', datefmt='%d/%m/%Y %H:%M:%S')
 
-from hailey_data.INFO import PREFIX, VERSION
+try:
+    from hailey_data.INFO import PREFIX, VERSION, welcomeMessage
+except Exception:
+    print("Failed to load configuration. Make sure that a `hailey_data' folder exists, with a file called INFO.py inside with the correct configuration.\nA full traceback is below:\n\n")
+    raise
 try:
     with open("TOKEN.txt") as file:
         TOKEN = file.read()
@@ -49,7 +53,5 @@ async def on_ready():
     print(final)
 @bot.event
 async def on_member_join(ctx):
-    await ctx.send("Hi, welcome to the server! I'm Hailey, the server's moderation bot!"
-                   "\nAn older version of Hailey used to exist, and it was more feature-complete. It was written in Java/Kotlin. Unfortunately, API changes rendered the bot unusable without a massive rewrite, which the developer didn't want to do."
-                   "\nThis version of Hailey is a rewrite-in-progress in Python by a new developer. We hope you enjoy. Feedback or want to contribute? https://github.com/TheTechRobo/hailey-python")
+    await ctx.send(welcomeMessage)
 bot.run(TOKEN)
