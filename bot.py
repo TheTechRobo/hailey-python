@@ -4,7 +4,7 @@ import discord, sys, asyncio, configparser, logging, random
 logging.basicConfig(level=logging.INFO, format='%(levelname)s @ %(asctime)s: %(message)s; Lineno %(lineno)d, func %(funcName)s, file %(filename)s.', datefmt='%d/%m/%Y %H:%M:%S')
 
 try:
-    from hailey_data.INFO import PREFIX, VERSION, welcomeMessage
+    from hailey_data.INFO import PREFIX, VERSION, welcomeMessage, leaveMessage
 except Exception:
     print("Failed to load configuration. Make sure that a `hailey_data' folder exists, with a file called INFO.py inside with the correct configuration.\nA full traceback is below:\n\n")
     raise
@@ -54,5 +54,7 @@ async def on_ready():
 @bot.event
 async def on_member_join(ctx):
     await ctx.send(welcomeMessage)
-
+@bot.event
+async def on_member_remove(ctx):
+    await ctx.send(leaveMessage) #ONLY sends if user is in another server with the SAME INSTANCE of the bot running
 bot.run(TOKEN)

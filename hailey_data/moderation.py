@@ -15,6 +15,9 @@ class modCog(commands.Cog):
         """
         mod = ctx.author
         reason = f"{reason}\nBanned by {mod}"
+        delete_message_days = int(delete_message_days)
+        if delete_message_days not in (0, 1, 7):
+            await ctx.send("Invalid number of days! Must be 0, 1, or 7.
         try:
             await member.send(f"**Looks like you've been banned from the {ctx.guild.name} server!**\nYour ban reason was: {reason}.")
             if appeal is not None:
@@ -55,8 +58,14 @@ class modCog(commands.Cog):
         try:
             await ctx.guild.unban(member, reason=reason)
         except Exception:
-            await ctx.send("**Oops!**\nWe did an oopsie and we can't seem to ban that user. Please try again, and make sure the user exists.")
+            await ctx.send("**Oops!**\nWe did an oopsie and we can't seem to unban that user. Please try again, and make sure the user exists.")
             raise
         await ctx.send("Success! :white_check_mark:")
+    @commands.has_permissions(kick_members=True)
+    @commands.command(name="kick")
+    async def kick(self, ctx, member: discord.Member, reason: str):
+        mod = ctx.author
+        reason = f"{reason}\nKicked by {mod}"
+        await ctx.send(f"Not working yet - Potentially used member: {member.mention} - Ban Reason: \n```\n{reason}\n```")
 def setup(bot):
     bot.add_cog(modCog(bot))
