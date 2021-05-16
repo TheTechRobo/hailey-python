@@ -21,6 +21,7 @@ if DISCORD_MEMBER_INTENT is True:
     intents.members = True
     bot = commands.Bot(command_prefix=PREFIX, intents=intents)
 else:
+    logging.warn("*** Intents disabled. Join/leave messages are disabled.")
     bot = commands.Bot(command_prefix=PREFIX)
 
 for extension in ("moderation", "roles"):
