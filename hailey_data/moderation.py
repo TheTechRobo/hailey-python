@@ -2,6 +2,7 @@ import discord, random
 from discord.ext import commands
 from discord.utils import get
 from .INFO import appeal
+from .func import SetEmbed
 class NothingSpecified(Exception):
     pass
 class modCog(commands.Cog):
@@ -17,7 +18,7 @@ class modCog(commands.Cog):
         reason = f"{reason}\nBanned by {mod}"
         delete_message_days = int(delete_message_days)
         if delete_message_days not in (0, 1, 7):
-            await ctx.send("Invalid number of days! Must be 0, 1, or 7.
+            await ctx.send("Invalid number of days! Must be 0, 1, or 7.")
         try:
             await member.send(f"**Looks like you've been banned from the {ctx.guild.name} server!**\nYour ban reason was: {reason}.")
             if appeal is not None:
@@ -49,9 +50,12 @@ class modCog(commands.Cog):
                 member = ban_entry.user
             elif ban_entry.user.name == member_name:
                 similar.append(f"{ban_entry.user.name}#{ban_entry.user.discriminator}")
+        if similar == []:
+            similar = "(No users found.)"
         if member is None:
-            await ctx.send("Could not find user in ban list! If you're sure you typed it correctly, they may be already unbanned.")
-            await ctx.send(f"However, the following users were similar:\n{similar}")
+            await ctx.send(embed=SetEmbed("Could not find user in ban list!", "If you're sure you typed it corretly, they may already be unbanned.", footer=f"However, the following users were similar:\n{similar}"))
+            #await ctx.send("Could not find user in ban list! If you're sure you typed it correctly, they may be already unbanned.")
+            #await ctx.send(f"However, the following users were similar:\n{similar}")
             raise Exception("user not found")
         mod = ctx.author
         reason = f"{reason}\nUnBanned by {mod}"
